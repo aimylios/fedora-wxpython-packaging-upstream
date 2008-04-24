@@ -4,7 +4,7 @@
 %define buildflags WXPORT=gtk2 UNICODE=1
 
 Name:           wxPython
-Version:        2.6.3.2
+Version:        2.8.7.1
 Release:        2%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
@@ -12,10 +12,11 @@ Summary:        GUI toolkit for the Python programming language
 Group:          Development/Languages
 License:        LGPL
 URL:            http://www.wxpython.org/
-Source0:        http://dl.sf.net/wxpython/wxPython-src-%{version}.tar.gz
+Source0:        http://dl.sf.net/wxpython/wxPython-src-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-BuildRequires:  wxGTK-devel = 2.6.3, pkgconfig
+# make sure to keep this updated as appropriate
+BuildRequires:  wxGTK-devel >= 2.8.7
+BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel, libpng-devel, libjpeg-devel, libtiff-devel
 BuildRequires:  libGL-devel, libGLU-devel
 BuildRequires:  python-devel, wxGTK-gl
@@ -23,6 +24,9 @@ BuildRequires:  python-devel, wxGTK-gl
 # packages should depend on "wxPython", not "wxPythonGTK2", but in case
 # one does, here's the provides for it.
 Provides:       wxPythonGTK2 = %{version}-%{release}
+
+# time for this to go away.
+Obsoletes:      compat-wxPythonGTK < 2.8.4.0
 
 %description
 wxPython is a GUI toolkit for the Python programming language. It allows
@@ -77,21 +81,53 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/*
 %{python_sitearch}/wx.pth
 %{python_sitearch}/wxversion.py*
-%dir %{python_sitearch}/wx-2.6-gtk2-unicode/
-%{python_sitearch}/wx-2.6-gtk2-unicode/wx
-%{python_sitearch}/wx-2.6-gtk2-unicode/wxPython
+%dir %{python_sitearch}/wx-2.8-gtk2-unicode/
+%{python_sitearch}/wx-2.8-gtk2-unicode/wx
+%{python_sitearch}/wx-2.8-gtk2-unicode/wxPython
+%{python_sitelib}/wxaddons
+%if 0%{?fedora} >= 9
+%{python_sitelib}/*egg-info
+%{python_sitearch}/wx-2.8-gtk2-unicode/*egg-info
+%endif
 
 %files devel
 %defattr(-,root,root,-)
-%dir %{_includedir}/wx-2.6/wx/wxPython
-%{_includedir}/wx-2.6/wx/wxPython/*.h
-%dir %{_includedir}/wx-2.6/wx/wxPython/i_files
-%{_includedir}/wx-2.6/wx/wxPython/i_files/*.i
-%{_includedir}/wx-2.6/wx/wxPython/i_files/*.py*
-%{_includedir}/wx-2.6/wx/wxPython/i_files/*.swg
+%dir %{_includedir}/wx-2.8/wx/wxPython
+%{_includedir}/wx-2.8/wx/wxPython/*.h
+%dir %{_includedir}/wx-2.8/wx/wxPython/i_files
+%{_includedir}/wx-2.8/wx/wxPython/i_files/*.i
+%{_includedir}/wx-2.8/wx/wxPython/i_files/*.py*
+%{_includedir}/wx-2.8/wx/wxPython/i_files/*.swg
 
 
 %changelog
+* Thu Feb 21 2008 Matthew Miller <mattdm@mattdm.org> - 2.8.7.1-2
+- include egg-info files for fedora 9 or greater
+
+* Wed Feb 20 2008 Matthew Miller <mattdm@mattdm.org> - 2.8.7.1-1
+- update to 2.8.7.1
+
+* Tue Feb 19 2008 Fedora Release Engineering <rel-eng@fedoraproject.org> - 2.8.4.0-3
+- Autorebuild for GCC 4.3
+
+* Wed Aug 29 2007 Fedora Release Engineering <rel-eng at fedoraproject dot org> - 2.8.4.0-2
+- Rebuild for selinux ppc32 issue.
+
+* Wed Jul 11 2007 Matthew Miller <mattdm@mattdm.org> - 2.8.4.0-1
+- update to 2.8.4.0
+- obsolete compat-wxPythonGTK
+
+* Sun Apr 15 2007 Matthew Miller <mattdm@mattdm.org> - 2.8.3.0-1
+- update to 2.8.3.0
+
+* Fri Dec 15 2006 Matthew Miller <mattdm@mattdm.org> - 2.8.0.1-1
+- update to 2.8.0.1
+- make buildrequire wxGTK of version-wxpythonsubrelease
+- add wxaddons to filelist
+
+* Mon Dec 11 2006 Matthew Miller <mattdm@mattdm.org> - 2.6.3.2-3
+- bump release for rebuild against python 2.5.
+
 * Mon Aug 28 2006 Matthew Miller <mattdm@mattdm.org> - 2.6.3.2-2
 - bump release for FC6 rebuild
 
