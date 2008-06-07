@@ -4,8 +4,8 @@
 %define buildflags WXPORT=gtk2 UNICODE=1
 
 Name:           wxPython
-Version:        2.8.4.0
-Release:        2%{?dist}
+Version:        2.8.7.1
+Release:        3%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -14,8 +14,9 @@ License:        LGPL
 URL:            http://www.wxpython.org/
 Source0:        http://dl.sf.net/wxpython/wxPython-src-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-BuildRequires:  wxGTK-devel >= 2.8.4, pkgconfig
+# make sure to keep this updated as appropriate
+BuildRequires:  wxGTK-devel >= 2.8.7
+BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel, libpng-devel, libjpeg-devel, libtiff-devel
 BuildRequires:  libGL-devel, libGLU-devel
 BuildRequires:  python-devel, wxGTK-gl
@@ -84,6 +85,10 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitearch}/wx-2.8-gtk2-unicode/wx
 %{python_sitearch}/wx-2.8-gtk2-unicode/wxPython
 %{python_sitelib}/wxaddons
+%if 0%{?fedora} >= 9
+%{python_sitelib}/*egg-info
+%{python_sitearch}/wx-2.8-gtk2-unicode/*egg-info
+%endif
 
 %files devel
 %defattr(-,root,root,-)
@@ -96,6 +101,19 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Jun  4 2008 Matthew Miller <mattdm@mattdm.org> - 2.8.7.1-3
+- gratuitously bump package release number to work around build system
+  glitch
+
+* Thu Feb 21 2008 Matthew Miller <mattdm@mattdm.org> - 2.8.7.1-2
+- include egg-info files for fedora 9 or greater
+
+* Wed Feb 20 2008 Matthew Miller <mattdm@mattdm.org> - 2.8.7.1-1
+- update to 2.8.7.1
+
+* Tue Feb 19 2008 Fedora Release Engineering <rel-eng@fedoraproject.org> - 2.8.4.0-3
+- Autorebuild for GCC 4.3
+
 * Wed Aug 29 2007 Fedora Release Engineering <rel-eng at fedoraproject dot org> - 2.8.4.0-2
 - Rebuild for selinux ppc32 issue.
 
