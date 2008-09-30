@@ -4,19 +4,18 @@
 %define buildflags WXPORT=gtk2 UNICODE=1
 
 Name:           wxPython
-Version:        2.8.7.1
-Release:        5%{?dist}
+Version:        2.8.9.1
+Release:        1%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
 Group:          Development/Languages
-License:        LGPL
+License:        LGPLv2+ and wxWidgets 
 URL:            http://www.wxpython.org/
 Source0:        http://dl.sf.net/wxpython/wxPython-src-%{version}.tar.bz2
-Patch0:         wxPython-src-2.8.7.1-bug450073.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 # make sure to keep this updated as appropriate
-BuildRequires:  wxGTK-devel >= 2.8.7
+BuildRequires:  wxGTK-devel >= 2.8.9
 BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel, libpng-devel, libjpeg-devel, libtiff-devel
 BuildRequires:  libGL-devel, libGLU-devel
@@ -50,7 +49,9 @@ programs which use the wxPython toolkit.
 
 %prep
 %setup -q -n wxPython-src-%{version}
-%patch0 -p1
+
+# fix libdir otherwise it additional wx libs cannot be found
+sed -i -e 's|/usr/lib|%{_libdir}|' wxPython/config.py
 
 
 %build
@@ -103,6 +104,21 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Sep 30 2008 Dan Horak <dan[at]danny.cz> - 2.8.9.1-1
+- update to 2.8.9.1
+- fix libdir for additional wx libraries (#306761)
+
+* Mon Sep 29 2008 Dan Horak <dan[at]danny.cz> - 2.8.9.0-1
+- update to 2.8.9.0
+
+* Sat Sep  6 2008 Tom "spot" Callaway <tcallawa@redhat.com> - 2.8.8.0-2
+- fix license tag
+
+* Thu Jul 31 2008 Matthew Miller <mattdm@mattdm.org> - 2.8.8.0-1
+- update to 2.8.8.0 (bug #457408)
+- a fix for bug #450073 is included in the upstream release, so
+  dropping that patch.
+
 * Thu Jun 12 2008 Hans de Goede <j.w.r.degoede@hhs.nl> - 2.8.7.1-5
 - Fix an attribute error when importing wxPython (compat) module
   (redhat bugzilla 450073, 450074)
