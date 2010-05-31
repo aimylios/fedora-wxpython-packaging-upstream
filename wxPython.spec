@@ -4,8 +4,8 @@
 %define buildflags WXPORT=gtk2 UNICODE=1
 
 Name:           wxPython
-Version:        2.8.7.1
-Release:        2%{?dist}
+Version:        2.8.11.0
+Release:        1%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -13,9 +13,14 @@ Group:          Development/Languages
 License:        LGPL
 URL:            http://www.wxpython.org/
 Source0:        http://dl.sf.net/wxpython/wxPython-src-%{version}.tar.bz2
+# http://trac.wxwidgets.org/ticket/10703
+Patch0:         wxPython-2.8.9.2-treelist.patch
+# fix aui imports
+# http://trac.wxwidgets.org/ticket/12107
+Patch1:         wxPython-2.8.11.0-aui.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 # make sure to keep this updated as appropriate
-BuildRequires:  wxGTK-devel >= 2.8.7
+BuildRequires:  wxGTK-devel >= 2.8.11
 BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel, libpng-devel, libjpeg-devel, libtiff-devel
 BuildRequires:  libGL-devel, libGLU-devel
@@ -49,6 +54,11 @@ programs which use the wxPython toolkit.
 
 %prep
 %setup -q -n wxPython-src-%{version}
+%patch0 -p1 -b .treelist
+%patch1 -p1 -b .aui
+
+# fix libdir otherwise additional wx libs cannot be found
+sed -i -e 's|/usr/lib|%{_libdir}|' wxPython/config.py
 
 
 %build
@@ -84,7 +94,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{python_sitearch}/wx-2.8-gtk2-unicode/
 %{python_sitearch}/wx-2.8-gtk2-unicode/wx
 %{python_sitearch}/wx-2.8-gtk2-unicode/wxPython
-%{python_sitelib}/wxaddons
 %if 0%{?fedora} >= 9
 %{python_sitelib}/*egg-info
 %{python_sitearch}/wx-2.8-gtk2-unicode/*egg-info
@@ -101,6 +110,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon May 31 2010 Dan Horák <dan[at]danny.cz> - 2.8.11.0-1
+- update to 2.8.11.0 (#593837, #595936, #597639)
+
 * Thu Feb 21 2008 Matthew Miller <mattdm@mattdm.org> - 2.8.7.1-2
 - include egg-info files for fedora 9 or greater
 
