@@ -4,7 +4,7 @@
 %define buildflags WXPORT=gtk2 UNICODE=1
 
 Name:           wxPython
-Version:        2.8.11.0
+Version:        2.8.12.0
 Release:        1%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
@@ -13,11 +13,9 @@ Group:          Development/Languages
 License:        LGPLv2+ and wxWidgets 
 URL:            http://www.wxpython.org/
 Source0:        http://downloads.sourceforge.net/wxpython/%{name}-src-%{version}.tar.bz2
-# http://trac.wxwidgets.org/ticket/10703
-Patch0:         wxPython-2.8.9.2-treelist.patch
 # fix aui imports
 # http://trac.wxwidgets.org/ticket/12107
-Patch1:         wxPython-2.8.11.0-aui.patch
+Patch0:         wxPython-2.8.12.0-aui.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 # make sure to keep this updated as appropriate
 BuildRequires:  wxGTK-devel >= 2.8.11
@@ -59,8 +57,7 @@ Documentation, samples and demo application for wxPython.
 
 %prep
 %setup -q -n wxPython-src-%{version}
-%patch0 -p1 -b .treelist
-%patch1 -p1 -b .aui
+%patch0 -p1 -b .aui
 
 # fix libdir otherwise additional wx libs cannot be found
 sed -i -e 's|/usr/lib|%{_libdir}|' wxPython/config.py
@@ -119,6 +116,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Apr 26 2011 Dan Horák <dan[at]danny.cz> - 2.8.12.0-1
+- update to 2.8.12.0 (#699207)
+
 * Mon May 31 2010 Dan Horák <dan[at]danny.cz> - 2.8.11.0-1
 - update to 2.8.11.0 (#593837, #595936, #597639)
 
