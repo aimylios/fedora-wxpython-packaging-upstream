@@ -5,7 +5,7 @@
 
 Name:           wxPython
 Version:        2.8.12.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -16,7 +16,7 @@ Source0:        http://downloads.sourceforge.net/wxpython/%{name}-src-%{version}
 # fix aui imports
 # http://trac.wxwidgets.org/ticket/12107
 Patch0:         wxPython-2.8.12.0-aui.patch
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Patch1:         wxPython-2.8.12.0-format.patch
 # make sure to keep this updated as appropriate
 BuildRequires:  wxGTK-devel >= 2.8.11
 BuildRequires:  python-devel
@@ -58,9 +58,10 @@ Documentation, samples and demo application for wxPython.
 %prep
 %setup -q -n wxPython-src-%{version}
 %patch0 -p1 -b .aui
+%patch1 -p1 -b .format
 
-# fix libdir otherwise additional wx libs cannot be found
-sed -i -e 's|/usr/lib|%{_libdir}|' wxPython/config.py
+# fix libdir otherwise additional wx libs cannot be found, fix default optimization flags
+sed -i -e 's|/usr/lib|%{_libdir}|' -e 's|-O3||' wxPython/config.py
 
 
 %build
@@ -73,7 +74,6 @@ python setup.py %{buildflags} build
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
 cd wxPython
 python setup.py %{buildflags} install --root=$RPM_BUILD_ROOT
 
@@ -83,12 +83,8 @@ mv $RPM_BUILD_ROOT%{python_sitelib}/wx.pth  $RPM_BUILD_ROOT%{python_sitearch}
 mv $RPM_BUILD_ROOT%{python_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python_sitearch}
 %endif
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 
 %files
-%defattr(-,root,root,-)
 %doc wxPython/licence
 %{_bindir}/*
 %{python_sitearch}/wx.pth
@@ -102,7 +98,6 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %files devel
-%defattr(-,root,root,-)
 %dir %{_includedir}/wx-2.8/wx/wxPython
 %{_includedir}/wx-2.8/wx/wxPython/*.h
 %dir %{_includedir}/wx-2.8/wx/wxPython/i_files
@@ -111,11 +106,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/wx-2.8/wx/wxPython/i_files/*.swg
 
 %files docs
-%defattr(-,root,root,-)
 %doc wxPython/docs wxPython/demo wxPython/samples
 
 
 %changelog
+* Fri Mar 14 2014 Dan Horák <dan[at]danny.cz> - 2.8.12.0-6
+- fix FTBFS due -Werror=format-security
+- modernize spec
+
 * Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.8.12.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
@@ -200,7 +198,7 @@ rm -rf $RPM_BUILD_ROOT
 - Fix an attribute error when importing wxPython (compat) module
   (redhat bugzilla 450073, 450074)
 
-* Sat Jun  6 2008 Matthew Miller <mattdm@mattdm.org> - 2.8.7.1-4
+* Sat Jun  7 2008 Matthew Miller <mattdm@mattdm.org> - 2.8.7.1-4
 - gratuitously bump package release number to work around build system
   glitch. again, but it will work this time.
 
