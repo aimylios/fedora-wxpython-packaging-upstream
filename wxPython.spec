@@ -61,7 +61,7 @@ Documentation, samples and demo application for wxPython.
 %patch1 -p1 -b .format
 
 # fix libdir otherwise additional wx libs cannot be found, fix default optimization flags
-sed -i -e 's|/usr/lib|%{_libdir}|' -e 's|-O3||' wxPython/config.py
+sed -i -e 's|/usr/lib|%{_libdir}|' -e 's|-O3|-O2|' wxPython/config.py
 
 
 %build
