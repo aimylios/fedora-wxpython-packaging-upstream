@@ -5,7 +5,7 @@
 
 Name:           wxPython
 Version:        2.8.12.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -110,6 +110,9 @@ mv $RPM_BUILD_ROOT%{python_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python_sitear
 
 
 %changelog
+* Sun Jun 08 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.8.12.0-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
 * Fri Mar 14 2014 Dan Horák <dan[at]danny.cz> - 2.8.12.0-6
 - fix FTBFS due -Werror=format-security
 - modernize spec
