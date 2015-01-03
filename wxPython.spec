@@ -1,11 +1,11 @@
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
-%define buildflags WXPORT=gtk2 UNICODE=1
+%define buildflags WX_CONFIG=/usr/bin/wx-config-3.0 WXPORT=gtk3
 
 Name:           wxPython
-Version:        2.8.12.0
-Release:        8%{?dist}
+Version:        3.0.2.0
+Release:        1%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -13,17 +13,13 @@ Group:          Development/Languages
 License:        LGPLv2+ and wxWidgets 
 URL:            http://www.wxpython.org/
 Source0:        http://downloads.sourceforge.net/wxpython/%{name}-src-%{version}.tar.bz2
-# fix aui imports
-# http://trac.wxwidgets.org/ticket/12107
-Patch0:         wxPython-2.8.12.0-aui.patch
-Patch1:         wxPython-2.8.12.0-format.patch
+# Remove Editra - it doesn't work and is technically a bundle.  Thanks to
+# Debian for the patch.
+Patch0:         fix-editra-removal.patch
+Patch1:         wxPython-3.0.0.0-format.patch
 # make sure to keep this updated as appropriate
-BuildRequires:  wxGTK-devel >= 2.8.11
+BuildRequires:  wxGTK3-devel >= 3.0.0
 BuildRequires:  python-devel
-
-# packages should depend on "wxPython", not "wxPythonGTK2", but in case
-# one does, here's the provides for it.
-Provides:       wxPythonGTK2 = %{version}-%{release}
 
 %description
 wxPython is a GUI toolkit for the Python programming language. It allows
@@ -36,7 +32,7 @@ platform GUI library, which is written in C++.
 Group:          Development/Libraries
 Summary:        Development files for wxPython add-on modules
 Requires:       %{name} = %{version}-%{release}
-Requires:       wxGTK-devel
+Requires:       wxGTK3-devel
 
 %description devel
 This package includes C++ header files and SWIG files needed for developing
@@ -57,7 +53,7 @@ Documentation, samples and demo application for wxPython.
 
 %prep
 %setup -q -n wxPython-src-%{version}
-%patch0 -p1 -b .aui
+%patch0 -p1 -b .editra-removal
 %patch1 -p1 -b .format
 
 # fix libdir otherwise additional wx libs cannot be found, fix default optimization flags
@@ -89,27 +85,29 @@ mv $RPM_BUILD_ROOT%{python_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python_sitear
 %{_bindir}/*
 %{python_sitearch}/wx.pth
 %{python_sitearch}/wxversion.py*
-%dir %{python_sitearch}/wx-2.8-gtk2-unicode/
-%{python_sitearch}/wx-2.8-gtk2-unicode/wx
-%{python_sitearch}/wx-2.8-gtk2-unicode/wxPython
+%dir %{python_sitearch}/wx-3.0-gtk3/
+%{python_sitearch}/wx-3.0-gtk3/wx
 %if 0%{?fedora} >= 9 || 0%{?rhel} >= 6
 %{python_sitelib}/*egg-info
-%{python_sitearch}/wx-2.8-gtk2-unicode/*egg-info
+%{python_sitearch}/wx-3.0-gtk3/*egg-info
 %endif
 
 %files devel
-%dir %{_includedir}/wx-2.8/wx/wxPython
-%{_includedir}/wx-2.8/wx/wxPython/*.h
-%dir %{_includedir}/wx-2.8/wx/wxPython/i_files
-%{_includedir}/wx-2.8/wx/wxPython/i_files/*.i
-%{_includedir}/wx-2.8/wx/wxPython/i_files/*.py*
-%{_includedir}/wx-2.8/wx/wxPython/i_files/*.swg
+%dir %{_includedir}/wx-3.0/wx/wxPython
+%{_includedir}/wx-3.0/wx/wxPython/*.h
+%dir %{_includedir}/wx-3.0/wx/wxPython/i_files
+%{_includedir}/wx-3.0/wx/wxPython/i_files/*.i
+%{_includedir}/wx-3.0/wx/wxPython/i_files/*.py*
+%{_includedir}/wx-3.0/wx/wxPython/i_files/*.swg
 
 %files docs
 %doc wxPython/docs wxPython/demo wxPython/samples
 
 
 %changelog
+* Tue Dec 23 2014 Scott Talbert <swt@techie.net> - 3.0.2.0-1
+- New upstream release 3.0.2.0, built against wxGTK3
+
 * Mon Aug 18 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.8.12.0-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
