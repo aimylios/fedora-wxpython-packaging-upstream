@@ -5,7 +5,7 @@
 
 Name:           wxPython
 Version:        3.0.2.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -17,6 +17,10 @@ Source0:        http://downloads.sourceforge.net/wxpython/%{name}-src-%{version}
 # Debian for the patch.
 Patch0:         fix-editra-removal.patch
 Patch1:         wxPython-3.0.0.0-format.patch
+# http://trac.wxwidgets.org/ticket/16765
+Patch2:         wxPython-3.0.2.0-getxwindowcrash.patch
+# http://trac.wxwidgets.org/ticket/16767
+Patch3:         wxPython-3.0.2.0-plot.patch
 # make sure to keep this updated as appropriate
 BuildRequires:  wxGTK3-devel >= 3.0.0
 BuildRequires:  python-devel
@@ -55,6 +59,8 @@ Documentation, samples and demo application for wxPython.
 %setup -q -n wxPython-src-%{version}
 %patch0 -p1 -b .editra-removal
 %patch1 -p1 -b .format
+%patch2 -p1 -b .getxwindowcrash
+%patch3 -p1 -b .plot
 
 # fix libdir otherwise additional wx libs cannot be found, fix default optimization flags
 sed -i -e 's|/usr/lib|%{_libdir}|' -e 's|-O3|-O2|' wxPython/config.py
@@ -105,6 +111,9 @@ mv $RPM_BUILD_ROOT%{python_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python_sitear
 
 
 %changelog
+* Sun Jan 04 2015 Scott Talbert <swt@techie.net> - 3.0.2.0-2
+- Added patches for fixing crash in GetXWindow() and wx.lib.plot bugs
+
 * Tue Dec 23 2014 Scott Talbert <swt@techie.net> - 3.0.2.0-1
 - New upstream release 3.0.2.0, built against wxGTK3
 
