@@ -5,7 +5,7 @@
 
 Name:           wxPython
 Version:        3.0.2.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -111,6 +111,9 @@ mv $RPM_BUILD_ROOT%{python_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python_sitear
 
 
 %changelog
+* Sat May 02 2015 Kalev Lember <kalevlember@gmail.com> - 3.0.2.0-4
+- Rebuilt for GCC 5 C++11 ABI change
+
 * Thu Mar 19 2015 Devrim Gunduz <devrim@gunduz.org> - 3.0.2.0-3
 - Rebuild for new GCC to fix C++ ABI issues.
 
