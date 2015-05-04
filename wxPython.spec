@@ -5,7 +5,7 @@
 
 Name:           wxPython
 Version:        3.0.2.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -24,6 +24,7 @@ Patch3:         wxPython-3.0.2.0-plot.patch
 # make sure to keep this updated as appropriate
 BuildRequires:  wxGTK3-devel >= 3.0.0
 BuildRequires:  python-devel
+Provides:       bundled(scintilla) = 3.2.1
 
 %description
 wxPython is a GUI toolkit for the Python programming language. It allows
@@ -111,6 +112,9 @@ mv $RPM_BUILD_ROOT%{python_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python_sitear
 
 
 %changelog
+* Mon May 04 2015 Jason L Tibbitts III <tibbs@math.uh.edu> - 3.0.2.0-5
+- Indicate that this package bundles scintilla 3.2.1.
+
 * Sat May 02 2015 Kalev Lember <kalevlember@gmail.com> - 3.0.2.0-4
 - Rebuilt for GCC 5 C++11 ABI change
 
