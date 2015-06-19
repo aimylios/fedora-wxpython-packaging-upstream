@@ -5,7 +5,7 @@
 
 Name:           wxPython
 Version:        3.0.2.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -112,6 +112,9 @@ mv $RPM_BUILD_ROOT%{python_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python_sitear
 
 
 %changelog
+* Fri Jun 19 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.0.2.0-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
 * Mon May 04 2015 Jason L Tibbitts III <tibbs@math.uh.edu> - 3.0.2.0-5
 - Indicate that this package bundles scintilla 3.2.1.
 
