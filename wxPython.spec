@@ -5,7 +5,7 @@
 
 Name:           wxPython
 Version:        3.0.2.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -21,6 +21,8 @@ Patch1:         wxPython-3.0.0.0-format.patch
 Patch2:         wxPython-3.0.2.0-getxwindowcrash.patch
 # http://trac.wxwidgets.org/ticket/16767
 Patch3:         wxPython-3.0.2.0-plot.patch
+# http://trac.wxwidgets.org/ticket/17160
+Patch4:         wxPython-3.0.2.0-listctrl-mixin-edit.patch
 # make sure to keep this updated as appropriate
 BuildRequires:  wxGTK3-devel >= 3.0.0
 BuildRequires:  python-devel
@@ -62,6 +64,7 @@ Documentation, samples and demo application for wxPython.
 %patch1 -p1 -b .format
 %patch2 -p1 -b .getxwindowcrash
 %patch3 -p1 -b .plot
+%patch4 -p1 -b .listctrl-mixin-edit
 
 # fix libdir otherwise additional wx libs cannot be found, fix default optimization flags
 sed -i -e 's|/usr/lib|%{_libdir}|' -e 's|-O3|-O2|' wxPython/config.py
@@ -112,6 +115,9 @@ mv $RPM_BUILD_ROOT%{python_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python_sitear
 
 
 %changelog
+* Tue Sep 29 2015 Scott Talbert <swt@techie.net> - 3.0.2.0-7
+- Add patch to workaround TextCtrl height issue in ListCtrl mixin (#1264698)
+
 * Fri Jun 19 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.0.2.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
