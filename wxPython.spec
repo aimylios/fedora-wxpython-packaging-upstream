@@ -5,7 +5,7 @@
 
 Name:           wxPython
 Version:        2.8.12.0
-Release:        8%{?dist}
+Release:        9%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -110,6 +110,9 @@ mv $RPM_BUILD_ROOT%{python_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python_sitear
 
 
 %changelog
+* Sun Dec 20 2015 Scott Talbert <swt@techie.net> - 2.8.12.0-9
+- Rebuilt due to wxGTK rebuild to remove gnomeprint support (#1293162)
+
 * Mon Aug 18 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.8.12.0-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
