@@ -1,11 +1,11 @@
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
-%define buildflags WX_CONFIG=/usr/bin/wx-config-3.0 WXPORT=gtk3
+%global buildflags WX_CONFIG=/usr/bin/wx-config-3.0 WXPORT=gtk3
 
 Name:           wxPython
 Version:        3.0.2.0
-Release:        7%{?dist}
+Release:        8%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -115,6 +115,9 @@ mv $RPM_BUILD_ROOT%{python_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python_sitear
 
 
 %changelog
+* Sun Dec 27 2015 Scott Talbert <swt@techie.net> - 3.0.2.0-8
+- Replace define macros with global ones
+
 * Tue Sep 29 2015 Scott Talbert <swt@techie.net> - 3.0.2.0-7
 - Add patch to workaround TextCtrl height issue in ListCtrl mixin (#1264698)
 
