@@ -1,11 +1,8 @@
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
-%{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
-
-%global buildflags WX_CONFIG=/usr/bin/wx-config-3.0 WXPORT=gtk3
+%global py_setup_args WX_CONFIG=/usr/bin/wx-config-3.0 WXPORT=gtk3
 
 Name:           wxPython
 Version:        3.0.2.0
-Release:        8%{?dist}
+Release:        9%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -25,8 +22,7 @@ Patch3:         wxPython-3.0.2.0-plot.patch
 Patch4:         wxPython-3.0.2.0-listctrl-mixin-edit.patch
 # make sure to keep this updated as appropriate
 BuildRequires:  wxGTK3-devel >= 3.0.0
-BuildRequires:  python-devel
-Provides:       bundled(scintilla) = 3.2.1
+BuildRequires:  python2-devel
 
 %description
 wxPython is a GUI toolkit for the Python programming language. It allows
@@ -50,57 +46,40 @@ programs which use the wxPython toolkit.
 Group:          Documentation
 Summary:        Documentation and samples for wxPython
 Requires:       %{name} = %{version}-%{release}
-%if 0%{?fedora} > 9
 BuildArch:      noarch
-%endif
 
 %description docs
 Documentation, samples and demo application for wxPython.
 
 
 %prep
-%setup -q -n wxPython-src-%{version}
-%patch0 -p1 -b .editra-removal
-%patch1 -p1 -b .format
-%patch2 -p1 -b .getxwindowcrash
-%patch3 -p1 -b .plot
-%patch4 -p1 -b .listctrl-mixin-edit
+%autosetup -p1 -n wxPython-src-%{version}
 
 # fix libdir otherwise additional wx libs cannot be found, fix default optimization flags
 sed -i -e 's|/usr/lib|%{_libdir}|' -e 's|-O3|-O2|' wxPython/config.py
 
 
 %build
-# Just build the wxPython part, not all of wxWindows which we already have
-# in Fedora
 cd wxPython
-# included distutils is not multilib aware; use normal
-rm -rf distutils
-python setup.py %{buildflags} build
+%py2_build
 
 
 %install
 cd wxPython
-python setup.py %{buildflags} install --root=$RPM_BUILD_ROOT
+%py2_install
 
 # this is a kludge....
-%if "%{python_sitelib}" != "%{python_sitearch}"
-mv $RPM_BUILD_ROOT%{python_sitelib}/wx.pth  $RPM_BUILD_ROOT%{python_sitearch}
-mv $RPM_BUILD_ROOT%{python_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python_sitearch}
+%if "%{python2_sitelib}" != "%{python2_sitearch}"
+mv $RPM_BUILD_ROOT%{python2_sitelib}/wx.pth  $RPM_BUILD_ROOT%{python2_sitearch}
+mv $RPM_BUILD_ROOT%{python2_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python2_sitearch}
 %endif
 
 
 %files
-%doc wxPython/licence
+%license wxPython/licence/*
 %{_bindir}/*
-%{python_sitearch}/wx.pth
-%{python_sitearch}/wxversion.py*
-%dir %{python_sitearch}/wx-3.0-gtk3/
-%{python_sitearch}/wx-3.0-gtk3/wx
-%if 0%{?fedora} >= 9 || 0%{?rhel} >= 6
-%{python_sitelib}/*egg-info
-%{python_sitearch}/wx-3.0-gtk3/*egg-info
-%endif
+%{python2_sitelib}/*
+%{python2_sitearch}/*
 
 %files devel
 %dir %{_includedir}/wx-3.0/wx/wxPython
@@ -115,6 +94,9 @@ mv $RPM_BUILD_ROOT%{python_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python_sitear
 
 
 %changelog
+* Wed Jan 06 2016 Scott Talbert <swt@techie.net> - 3.0.2.0-9
+- Modernize python packaging and general cleanup
+
 * Sun Dec 27 2015 Scott Talbert <swt@techie.net> - 3.0.2.0-8
 - Replace define macros with global ones
 
