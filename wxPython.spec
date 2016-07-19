@@ -2,7 +2,7 @@
 
 Name:           wxPython
 Version:        3.0.2.0
-Release:        10%{?dist}
+Release:        11%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -94,6 +94,9 @@ mv $RPM_BUILD_ROOT%{python2_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python2_site
 
 
 %changelog
+* Tue Jul 19 2016 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.0.2.0-11
+- https://fedoraproject.org/wiki/Changes/Automatic_Provides_for_Python_RPM_Packages
+
 * Fri Feb 05 2016 Fedora Release Engineering <releng@fedoraproject.org> - 3.0.2.0-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
