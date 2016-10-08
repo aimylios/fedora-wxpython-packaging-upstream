@@ -2,7 +2,7 @@
 
 Name:           wxPython
 Version:        3.0.2.0
-Release:        11%{?dist}
+Release:        12%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -20,6 +20,8 @@ Patch2:         wxPython-3.0.2.0-getxwindowcrash.patch
 Patch3:         wxPython-3.0.2.0-plot.patch
 # http://trac.wxwidgets.org/ticket/17160
 Patch4:         wxPython-3.0.2.0-listctrl-mixin-edit.patch
+# From Debian
+Patch5:         wxPython-3.0.2.0-webview-optional.patch
 # make sure to keep this updated as appropriate
 BuildRequires:  wxGTK3-devel >= 3.0.0
 BuildRequires:  python2-devel
@@ -51,6 +53,16 @@ BuildArch:      noarch
 %description docs
 Documentation, samples and demo application for wxPython.
 
+%if 0%{?fedora} > 25
+%package        webview
+Group:          Development/Languages
+Summary:        WebView add-on for wxPython
+Requires:       %{name} = %{version}-%{release}
+
+%description webview
+This package contains the optional WebView (html2) module for wxPython.
+%endif
+
 
 %prep
 %autosetup -p1 -n wxPython-src-%{version}
@@ -79,6 +91,9 @@ mv $RPM_BUILD_ROOT%{python2_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python2_site
 %license wxPython/licence/*
 %{_bindir}/*
 %{python2_sitelib}/*
+%if 0%{?fedora} > 25
+%exclude %{python2_sitearch}/wx-3.0-gtk3/wx/*html2.*
+%endif
 %{python2_sitearch}/*
 
 %files devel
@@ -92,8 +107,16 @@ mv $RPM_BUILD_ROOT%{python2_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python2_site
 %files docs
 %doc wxPython/docs wxPython/demo wxPython/samples
 
+%if 0%{?fedora} > 25
+%files webview
+%{python2_sitearch}/wx-3.0-gtk3/wx/*html2.*
+%endif
+
 
 %changelog
+* Sat Oct 08 2016 Scott Talbert <swt@techie.net> - 3.0.2.0-12
+- Add a -webview subpackage in F26+
+
 * Tue Jul 19 2016 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.0.2.0-11
 - https://fedoraproject.org/wiki/Changes/Automatic_Provides_for_Python_RPM_Packages
 
