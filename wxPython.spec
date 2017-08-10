@@ -2,7 +2,7 @@
 
 Name:           wxPython
 Version:        3.0.2.0
-Release:        15%{?dist}
+Release:        16%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -26,12 +26,23 @@ Patch5:         wxPython-3.0.2.0-webview-optional.patch
 BuildRequires:  wxGTK3-devel >= 3.0.0
 BuildRequires:  python2-devel
 
-%description
-wxPython is a GUI toolkit for the Python programming language. It allows
-Python programmers to create programs with a robust, highly functional
-graphical user interface, simply and easily. It is implemented as a Python
-extension module (native code) that wraps the popular wxWindows cross
+%global _description\
+wxPython is a GUI toolkit for the Python programming language. It allows\
+Python programmers to create programs with a robust, highly functional\
+graphical user interface, simply and easily. It is implemented as a Python\
+extension module (native code) that wraps the popular wxWindows cross\
 platform GUI library, which is written in C++.
+
+%description %_description
+
+%package -n python2-wxpython
+Summary:        %summary
+%{?python_provide:%python_provide python2-wxpython}
+# Remove before F30
+Provides:       wxPython%{?_isa} = %{version}-%{release}
+Obsoletes:      wxPython < %{version}-%{release}
+
+%description -n python2-wxpython %_description
 
 %package        devel
 Group:          Development/Libraries
@@ -54,12 +65,17 @@ BuildArch:      noarch
 Documentation, samples and demo application for wxPython.
 
 %if 0%{?fedora} > 25
-%package        webview
+%package -n python2-wxpython-webview
 Group:          Development/Languages
 Summary:        WebView add-on for wxPython
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+%{?python_provide:%python_provide python2-wxpython-webview}
+# Remove before F30
+Provides:       wxPython-webview%{?_isa} = %{version}-%{release}
+Obsoletes:      wxPython-webview < %{version}-%{release}
 
-%description webview
+
+%description -n python2-wxpython-webview
 This package contains the optional WebView (html2) module for wxPython.
 %endif
 
@@ -87,7 +103,7 @@ mv $RPM_BUILD_ROOT%{python2_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python2_site
 %endif
 
 
-%files
+%files -n python2-wxpython
 %license wxPython/licence/*
 %{_bindir}/*
 %{python2_sitelib}/*
@@ -108,12 +124,17 @@ mv $RPM_BUILD_ROOT%{python2_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python2_site
 %doc wxPython/docs wxPython/demo wxPython/samples
 
 %if 0%{?fedora} > 25
-%files webview
+%files -n python2-wxpython-webview
 %{python2_sitearch}/wx-3.0-gtk3/wx/*html2.*
 %endif
 
 
 %changelog
+* Thu Aug 10 2017 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 3.0.2.0-16
+- Main Python 2 binary package renamed to python2-wxpython,
+  and wxPython-webview renamed to python2-wxpython-webview.
+  See https://fedoraproject.org/wiki/FinalizingFedoraSwitchtoPython3
+
 * Thu Aug 03 2017 Fedora Release Engineering <releng@fedoraproject.org> - 3.0.2.0-15
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
 
