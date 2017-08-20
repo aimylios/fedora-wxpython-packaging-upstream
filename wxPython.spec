@@ -2,7 +2,7 @@
 
 Name:           wxPython
 Version:        3.0.2.0
-Release:        16%{?dist}
+Release:        17%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -39,6 +39,7 @@ platform GUI library, which is written in C++.
 Summary:        %summary
 %{?python_provide:%python_provide python2-wxpython}
 # Remove before F30
+Provides:       wxPython = %{version}-%{release}
 Provides:       wxPython%{?_isa} = %{version}-%{release}
 Obsoletes:      wxPython < %{version}-%{release}
 
@@ -47,7 +48,7 @@ Obsoletes:      wxPython < %{version}-%{release}
 %package        devel
 Group:          Development/Libraries
 Summary:        Development files for wxPython add-on modules
-Requires:       %{name} = %{version}-%{release}
+Requires:       python2-%{name} = %{version}-%{release}
 Requires:       wxGTK3-devel
 
 %description devel
@@ -58,7 +59,7 @@ programs which use the wxPython toolkit.
 %package        docs
 Group:          Documentation
 Summary:        Documentation and samples for wxPython
-Requires:       %{name} = %{version}-%{release}
+Requires:       python2-%{name} = %{version}-%{release}
 BuildArch:      noarch
 
 %description docs
@@ -68,9 +69,10 @@ Documentation, samples and demo application for wxPython.
 %package -n python2-wxpython-webview
 Group:          Development/Languages
 Summary:        WebView add-on for wxPython
-Requires:       %{name}%{?_isa} = %{version}-%{release}
+Requires:       python2-%{name}%{?_isa} = %{version}-%{release}
 %{?python_provide:%python_provide python2-wxpython-webview}
 # Remove before F30
+Provides:       wxPython-webview = %{version}-%{release}
 Provides:       wxPython-webview%{?_isa} = %{version}-%{release}
 Obsoletes:      wxPython-webview < %{version}-%{release}
 
@@ -130,6 +132,9 @@ mv $RPM_BUILD_ROOT%{python2_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python2_site
 
 
 %changelog
+* Sun Aug 20 2017 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 3.0.2.0-17
+- Fix internal Requires and add Provides for the old name without %%_isa
+
 * Thu Aug 10 2017 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 3.0.2.0-16
 - Main Python 2 binary package renamed to python2-wxpython,
   and wxPython-webview renamed to python2-wxpython-webview.
