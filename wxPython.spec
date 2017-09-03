@@ -2,7 +2,7 @@
 
 Name:           wxPython
 Version:        3.0.2.0
-Release:        18%{?dist}
+Release:        19%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -22,6 +22,8 @@ Patch3:         wxPython-3.0.2.0-plot.patch
 Patch4:         wxPython-3.0.2.0-listctrl-mixin-edit.patch
 # From Debian
 Patch5:         wxPython-3.0.2.0-webview-optional.patch
+# From Debian
+Patch6:         wxPython-3.0.2.0-suppress-version-mismatch-warning.patch
 # make sure to keep this updated as appropriate
 BuildRequires:  wxGTK3-devel >= 3.0.0
 BuildRequires:  python2-devel
@@ -132,6 +134,9 @@ mv $RPM_BUILD_ROOT%{python2_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python2_site
 
 
 %changelog
+* Sun Sep 03 2017 Scott Talbert <swt@techie.net> - 3.0.2.0-19
+- Suppress warning about release version mismatch (since wxGTK3 3.0.3 update)
+
 * Sun Aug 20 2017 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 3.0.2.0-18
 - Fix internal requires (case was wrong)
 
