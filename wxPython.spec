@@ -2,7 +2,7 @@
 
 Name:           wxPython
 Version:        3.0.2.0
-Release:        19%{?dist}
+Release:        20%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -52,6 +52,7 @@ Group:          Development/Libraries
 Summary:        Development files for wxPython add-on modules
 Requires:       python2-wxpython = %{version}-%{release}
 Requires:       wxGTK3-devel
+BuildArch:      noarch
 
 %description devel
 This package includes C++ header files and SWIG files needed for developing
@@ -134,6 +135,9 @@ mv $RPM_BUILD_ROOT%{python2_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python2_site
 
 
 %changelog
+* Wed Sep 20 2017 Scott Talbert <swt@techie.net> - 3.0.2.0-20
+- Make -devel noarch to resolve issue with conflicting archful pkgs (#1493233)
+
 * Sun Sep 03 2017 Scott Talbert <swt@techie.net> - 3.0.2.0-19
 - Suppress warning about release version mismatch (since wxGTK3 3.0.3 update)
 
