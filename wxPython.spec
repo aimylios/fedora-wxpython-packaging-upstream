@@ -2,7 +2,7 @@
 
 Name:           wxPython
 Version:        3.0.2.0
-Release:        20%{?dist}
+Release:        21%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -24,6 +24,8 @@ Patch4:         wxPython-3.0.2.0-listctrl-mixin-edit.patch
 Patch5:         wxPython-3.0.2.0-webview-optional.patch
 # From Debian
 Patch6:         wxPython-3.0.2.0-suppress-version-mismatch-warning.patch
+# https://github.com/wxWidgets/wxPython/pull/23
+Patch7:         wxPython-3.0.2.0-fix-wxcairo.patch
 # make sure to keep this updated as appropriate
 BuildRequires:  wxGTK3-devel >= 3.0.0
 BuildRequires:  python2-devel
@@ -135,6 +137,9 @@ mv $RPM_BUILD_ROOT%{python2_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python2_site
 
 
 %changelog
+* Wed Dec 20 2017 Scott Talbert <swt@techie.net> - 3.0.2.0-21
+- Add patch to fix wxcairo for pycairo 1.11.1+
+
 * Wed Sep 20 2017 Scott Talbert <swt@techie.net> - 3.0.2.0-20
 - Make -devel noarch to resolve issue with conflicting archful pkgs (#1493233)
 
