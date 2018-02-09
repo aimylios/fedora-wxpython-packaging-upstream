@@ -2,7 +2,7 @@
 
 Name:           wxPython
 Version:        3.0.2.0
-Release:        21%{?dist}
+Release:        22%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -137,6 +137,9 @@ mv $RPM_BUILD_ROOT%{python2_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python2_site
 
 
 %changelog
+* Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 3.0.2.0-22
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
+
 * Wed Dec 20 2017 Scott Talbert <swt@techie.net> - 3.0.2.0-21
 - Add patch to fix wxcairo for pycairo 1.11.1+
 
