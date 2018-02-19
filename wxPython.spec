@@ -2,7 +2,7 @@
 
 Name:           wxPython
 Version:        3.0.2.0
-Release:        22%{?dist}
+Release:        23%{?dist}
 
 Summary:        GUI toolkit for the Python programming language
 
@@ -27,6 +27,7 @@ Patch6:         wxPython-3.0.2.0-suppress-version-mismatch-warning.patch
 # https://github.com/wxWidgets/wxPython/pull/23
 Patch7:         wxPython-3.0.2.0-fix-wxcairo.patch
 # make sure to keep this updated as appropriate
+BuildRequires:  gcc-c++
 BuildRequires:  wxGTK3-devel >= 3.0.0
 BuildRequires:  python2-devel
 
@@ -137,6 +138,9 @@ mv $RPM_BUILD_ROOT%{python2_sitelib}/wxversion.py* $RPM_BUILD_ROOT%{python2_site
 
 
 %changelog
+* Mon Feb 19 2018 Scott Talbert <swt@techie.net> - 3.0.2.0-23
+- Add missing BR for gcc-c++
+
 * Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 3.0.2.0-22
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
